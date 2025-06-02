@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Color Grid</title>
+  <title>Color Tap Debugger</title>
 
   <style>
 
@@ -44,13 +44,35 @@
 
       color: white;
 
-      font-size: 20px;
+      font-size: 16px;
 
-      padding: 10px;
+      padding: 8px;
 
-      text-align: center;
+      text-align: left;
+
+      white-space: pre-line;
 
       z-index: 1000;
+
+    }
+
+    .marker {
+
+      position: absolute;
+
+      width: 10px;
+
+      height: 10px;
+
+      background: red;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 999;
+
+      transform: translate(-50%, -50%);
 
     }
 
@@ -60,15 +82,15 @@
 
 <body>
 
-  <div id="output">Tap anywhere to get RGB color</div>
+  <div id="output">Tap anywhere to test color and coordinate mapping</div>
 
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
 
     // Generate 64 random color boxes
-
-    const colors = [];
 
     for (let i = 0; i < 64; i++) {
 
@@ -78,39 +100,59 @@
 
       const b = Math.floor(Math.random() * 256);
 
-      colors.push(`rgb(${r}, ${g}, ${b})`);
+      const div = document.createElement('div');
+
+      div.className = 'color-box';
+
+      div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+      document.body.appendChild(div);
 
     }
 
 
 
-    const body = document.body;
+    // Handle tap or click
 
-    colors.forEach(color => {
-
-      const div = document.createElement('div');
-
-      div.className = 'color-box';
-
-      div.style.backgroundColor = color;
-
-      body.appendChild(div);
-
-    });
-
-
-
-    document.addEventListener('click', function(e) {
-
-      // Use page coordinates instead of screen
+    document.addEventListener('click', function (e) {
 
       const pageX = e.pageX;
 
       const pageY = e.pageY;
 
+      const clientX = e.clientX;
+
+      const clientY = e.clientY;
+
+      const screenX = e.screenX;
+
+      const screenY = e.screenY;
+
+      const scrollY = window.scrollY;
 
 
-      // Create canvas from the current view
+
+      // Place a red marker
+
+      let oldMarker = document.querySelector('.marker');
+
+      if (oldMarker) oldMarker.remove();
+
+
+
+      const marker = document.createElement('div');
+
+      marker.className = 'marker';
+
+      marker.style.left = `${pageX}px`;
+
+      marker.style.top = `${pageY}px`;
+
+      document.body.appendChild(marker);
+
+
+
+      // Render canvas and get RGB at pageX/pageY
 
       html2canvas(document.body).then(canvas => {
 
@@ -120,19 +162,29 @@
 
         const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
 
-        document.getElementById('output').innerText = `PageX: ${pageX}, PageY: ${pageY}, RGB: ${rgb}`;
+
+
+        // Update output info
+
+        const output = document.getElementById('output');
+
+        output.innerText = `Click Info:
+
+screenX: ${screenX}, screenY: ${screenY}
+
+clientX: ${clientX}, clientY: ${clientY}
+
+pageX: ${pageX}, pageY: ${pageY}
+
+scrollY: ${scrollY}
+
+Detected RGB: ${rgb}`;
 
       });
 
     });
 
   </script>
-
-
-
-  <!-- Include html2canvas for pixel reading -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 </body>
 
