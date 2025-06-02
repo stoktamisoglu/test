@@ -1,169 +1,111 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-
-  <title>Fixed Color Grid Test</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-
-    body {
-
-      margin: 0;
-
-      padding: 0;
-
-      background: black;
-
-    }
-
-    .color-box {
-
-      position: absolute;
-
-      width: 100px;
-
-      height: 100px;
-
-    }
-
-    #output {
-
-      position: fixed;
-
-      bottom: 0;
-
-      left: 0;
-
-      right: 0;
-
-      background: black;
-
-      color: white;
-
-      font-size: 16px;
-
-      padding: 8px;
-
-      z-index: 1000;
-
-      white-space: pre-line;
-
-    }
-
-    .marker {
-
-      position: absolute;
-
-      width: 10px;
-
-      height: 10px;
-
-      background: red;
-
-      border-radius: 50%;
-
-      pointer-events: none;
-
-      z-index: 999;
-
-      transform: translate(-50%, -50%);
-
-    }
-
-  </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Grid with Delta-E Calculations</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .color-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            width: 100vw;
+            height: 100vh;
+        }
+        .color-square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: black;
+        }
+        .color-1 { background-color: rgb(255, 0, 0); }
+        .color-2 { background-color: rgb(0, 255, 0); }
+        .color-3 { background-color: rgb(0, 0, 255); }
+        .color-4 { background-color: rgb(255, 255, 0); }
+        .color-5 { background-color: rgb(0, 255, 255); }
+        .color-6 { background-color: rgb(255, 0, 255); }
+        .color-7 { background-color: rgb(192, 192, 192); }
+        .color-8 { background-color: rgb(128, 128, 128); }
+        .color-9 { background-color: rgb(128, 0, 0); }
+        .color-10 { background-color: rgb(128, 128, 0); }
+        .color-11 { background-color: rgb(0, 128, 0); }
+        .color-12 { background-color: rgb(128, 0, 128); }
+        .color-13 { background-color: rgb(0, 128, 128); }
+        .color-14 { background-color: rgb(0, 0, 128); }
+        .color-15 { background-color: rgb(255, 165, 0); }
+        .color-16 { background-color: rgb(255, 20, 147); }
+        .color-17 { background-color: rgb(75, 0, 130); }
+        .color-18 { background-color: rgb(173, 216, 230); }
+        .color-19 { background-color: rgb(240, 230, 140); }
+        .color-20 { background-color: rgb(60, 179, 113); }
+        .color-21 { background-color: rgb(123, 104, 238); }
+        .color-22 { background-color: rgb(70, 130, 180); }
+        .color-23 { background-color: rgb(238, 130, 238); }
+        .color-24 { background-color: rgb(245, 222, 179); }
+        .color-25 { background-color: rgb(255, 192, 203); }
+    </style>
 </head>
-
 <body>
+    <div class="color-container">
+        <!-- 25 squares with different colors -->
+        <div class="color-square color-1"></div>
+        <div class="color-square color-2"></div>
+        <div class="color-square color-3"></div>
+        <div class="color-square color-4"></div>
+        <div class="color-square color-5"></div>
+        <div class="color-square color-6"></div>
+        <div class="color-square color-7"></div>
+        <div class="color-square color-8"></div>
+        <div class="color-square color-9"></div>
+        <div class="color-square color-10"></div>
+        <div class="color-square color-11"></div>
+        <div class="color-square color-12"></div>
+        <div class="color-square color-13"></div>
+        <div class="color-square color-14"></div>
+        <div class="color-square color-15"></div>
+        <div class="color-square color-16"></div>
+        <div class="color-square color-17"></div>
+        <div class="color-square color-18"></div>
+        <div class="color-square color-19"></div>
+        <div class="color-square color-20"></div>
+        <div class="color-square color-21"></div>
+        <div class="color-square color-22"></div>
+        <div class="color-square color-23"></div>
+        <div class="color-square color-24"></div>
+        <div class="color-square color-25"></div>
+    </div>
 
-  <div id="output">Tap or click anywhere</div>
+    <script>
+        // Function to get the RGB color at a specific point (x, y)
+        function getRGBAtPoint(x, y) {
+            const element = document.elementFromPoint(x, y);
+            if (element) {
+                const style = getComputedStyle(element);
+                return style.backgroundColor;
+            } else {
+                return null; // Return null if no element is found at the specified point
+            }
+        }
 
-
-
-  <!-- Fixed Color Boxes -->
-
-  <div class="color-box" style="left:0px; top:0px; background: rgb(255,0,0);"></div>     <!-- Red -->
-
-  <div class="color-box" style="left:100px; top:0px; background: rgb(0,255,0);"></div>   <!-- Green -->
-
-  <div class="color-box" style="left:200px; top:0px; background: rgb(0,0,255);"></div>   <!-- Blue -->
-
-  <div class="color-box" style="left:300px; top:0px; background: rgb(255,255,0);"></div> <!-- Yellow -->
-
-  <div class="color-box" style="left:0px; top:100px; background: rgb(0,255,255);"></div> <!-- Cyan -->
-
-  <div class="color-box" style="left:100px; top:100px; background: rgb(255,0,255);"></div> <!-- Magenta -->
-
-  <div class="color-box" style="left:200px; top:100px; background: rgb(255,255,255);"></div> <!-- White -->
-
-  <div class="color-box" style="left:300px; top:100px; background: rgb(128,128,128);"></div> <!-- Gray -->
-
-
-
-  <!-- Output Marker & Logic -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <script>
-
-    document.addEventListener('click', function (e) {
-
-      const pageX = e.pageX;
-
-      const pageY = e.pageY;
-
-
-
-      // Remove old marker
-
-      let oldMarker = document.querySelector('.marker');
-
-      if (oldMarker) oldMarker.remove();
-
-
-
-      // Add red dot marker
-
-      const marker = document.createElement('div');
-
-      marker.className = 'marker';
-
-      marker.style.left = `${pageX}px`;
-
-      marker.style.top = `${pageY}px`;
-
-      document.body.appendChild(marker);
-
-
-
-      // Read RGB from canvas
-
-      html2canvas(document.body).then(canvas => {
-
-        const ctx = canvas.getContext('2d');
-
-        const pixel = ctx.getImageData(pageX, pageY, 1, 1).data;
-
-        const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-
-
-
-        document.getElementById('output').innerText = `Click at:
-
-pageX: ${pageX}, pageY: ${pageY}
-
-Detected RGB: ${rgb}`;
-
-      });
-
-    });
-
-  </script>
-
+		document.addEventListener('click', function (e) {
+			const pageX = e.pageX;
+			const pageY = e.pageY;
+			const rgbColor = getRGBAtPoint(pageX, pageY);
+			document.getElementById('output').innerText = `Click at:
+				pageX: ${pageX}, pageY: ${pageY}
+				Detected RGB: ${rgbColor}`;
+		});
+		
+    </script>
 </body>
-
 </html>
