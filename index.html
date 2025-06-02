@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Grid</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .color-box {
+      width: 25vw;
+      height: 25vw;
+      flex-shrink: 0;
+    }
+    #output {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: black;
+      color: white;
+      font-size: 20px;
+      padding: 10px;
+      text-align: center;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="output">Tap anywhere to get RGB color</div>
+  <script>
+    const colors = [];
+
+    for (let i = 0; i < 64; i++) {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+
+      colors.push(`rgb(${r}, ${g}, ${b})`);
+    }
+    const body = document.body;
+
+    colors.forEach(color => {
+      const div = document.createElement('div');
+      div.className = 'color-box';
+      div.style.backgroundColor = color;
+      body.appendChild(div);
+    });
+
+    document.addEventListener('click', function(e) {
+      const screenX = e.screenX;
+      const screenY = e.screenY;
+      html2canvas(document.body).then(canvas => {
+		const rect = canvas.getBoundingClientRect();
+		const canvasX = screenX - rect.left;
+		const canvasY = screenY - rect.top;
+        const ctx = canvas.getContext('2d');
+        const pixel = ctx.getImageData(canvasX, canvasY, 1, 1).data;
+        const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+        document.getElementById('output').innerText = `ScreenX: ${screenX}, ScreenY: ${screenY}, RGB: ${rgb}`;
+      });
+
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
