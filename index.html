@@ -105,14 +105,6 @@
 		document.getElementById('output').innerText = `Click at:
 			pageX: ${pageX}, pageY: ${pageY}
 			Detected RGB: ${rgbColor}`;
-		const oldMarker = document.querySelector('.marker');
-		if (oldMarker) oldMarker.remove();
-		// Add red marker after reading RGB
-		const marker = document.createElement('div');
-		marker.className = 'marker';
-		marker.style.left = `${pageX}px`;
-		marker.style.top = `${pageY}px`;
-		document.body.appendChild(marker);
 	});
     </script>
 </body>
