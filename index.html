@@ -22,7 +22,7 @@
     input {
       font-size: 16px;
       padding: 6px 10px;
-      width: 160px;
+      width: 120px;
       text-align: center;
     }
     button {
@@ -37,12 +37,18 @@
   <div class="controls">
     <input id="rgbInput" type="text" placeholder="e.g. 255,255,255" />
     <button onclick="applyColor()">Show</button>
+    <button onclick="clearInput()">Clear</button>
   </div>
 
   <script>
     function applyColor() {
       const input = document.getElementById('rgbInput').value.trim();
       document.body.style.backgroundColor = `rgb(${input})`;
+    }
+
+    function clearInput() {
+      document.getElementById('rgbInput').value = '';
+      document.getElementById('rgbInput').focus();
     }
   </script>
 </body>
