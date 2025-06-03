@@ -9,25 +9,20 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
       font-family: sans-serif;
       transition: background-color 0.2s;
     }
-    .top-bar {
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 16px;
-      background: #f0f0f0;
-      width: 100%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      gap: 8px;
     }
     input {
       font-size: 16px;
       padding: 6px 10px;
-      width: 200px;
+      width: 160px;
       text-align: center;
     }
     button {
@@ -35,21 +30,12 @@
       padding: 6px 12px;
       cursor: pointer;
     }
-    .content {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   </style>
 </head>
 <body>
-  <div class="top-bar">
+  <div class="controls">
     <input id="rgbInput" type="text" placeholder="e.g. 255,255,255" />
     <button onclick="applyColor()">Show</button>
-  </div>
-  <div class="content">
-    <p>Enter an RGB value above to change background</p>
   </div>
 
   <script>
